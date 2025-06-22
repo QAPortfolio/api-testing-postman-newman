@@ -1,0 +1,409 @@
+{
+	"info": {
+		"_postman_id": "28c5c47b-ec99-4201-8bc8-2ab4879584f0",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45878058",
+		"_collection_link": "https://www.postman.com/olehkucherenko/workspace/api-testing/collection/45878058-28c5c47b-ec99-4201-8bc8-2ab4879584f0?action=share&source=collection_link&creator=45878058"
+	},
+	"item": [
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User response body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"userName\").slice(1, -1));\r",
+							"    pm.expect(jsonData.username).to.eql(pm.environment.get(\"userUsername\").slice(1, -1));\r",
+							"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"userEmail\").slice(1, -1));\r",
+							"    pm.expect(jsonData.address.street).to.eql(pm.environment.get(\"userAddressStreet\").slice(1, -1));\r",
+							"    pm.expect(jsonData.address.city).to.eql(pm.environment.get(\"userAddressCity\").slice(1, -1));\r",
+							"    pm.expect(jsonData.phone).to.eql(pm.environment.get(\"userPhone\").slice(1, -1));\r",
+							"    pm.expect(jsonData.website).to.eql(pm.environment.get(\"userWebsite\").slice(1, -1));\r",
+							"    pm.expect(jsonData.company.name).to.eql(pm.environment.get(\"userCompanyName\").slice(1, -1));\r",
+							"\r",
+							"    // Save created user id\r",
+							"    pm.environment.set(\"createdUserId\", jsonData.id);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": {{userName}},\r\n    \"username\": {{userUsername}},\r\n    \"email\": {{userEmail}},\r\n    \"address\": {\r\n        \"street\": {{userAddressStreet}},\r\n        \"city\": {{userAddressCity}}\r\n    },\r\n    \"phone\": {{userPhone}},\r\n    \"website\": {{userWebsite}},\r\n    \"company\": {\r\n        \"name\": {{userCompanyName}}\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/{{usersRoute}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{usersRoute}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User response body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(1);\r",
+							"    pm.expect(jsonData.name).to.eql(\"Leanne Graham\");\r",
+							"    pm.expect(jsonData.username).to.eql(\"Bret\");\r",
+							"    pm.expect(jsonData.email).to.eql(\"Sincere@april.biz\");\r",
+							"    pm.expect(jsonData.address.street).to.eql(\"Kulas Light\");\r",
+							"    pm.expect(jsonData.address.suite).to.eql(\"Apt. 556\");\r",
+							"    pm.expect(jsonData.address.city).to.eql(\"Gwenborough\");\r",
+							"    pm.expect(jsonData.address.zipcode).to.eql(\"92998-3874\");\r",
+							"    pm.expect(jsonData.address.geo.lat).to.eql(\"-37.3159\");\r",
+							"    pm.expect(jsonData.address.geo.lng).to.eql(\"81.1496\");\r",
+							"    pm.expect(jsonData.phone).to.eql(\"1-770-736-8031 x56442\");\r",
+							"    pm.expect(jsonData.website).to.eql(\"hildegard.org\");\r",
+							"    pm.expect(jsonData.company.name).to.eql(\"Romaguera-Crona\");\r",
+							"    pm.expect(jsonData.company.catchPhrase).to.eql(\"Multi-layered client-server neural-net\");\r",
+							"    pm.expect(jsonData.company.bs).to.eql(\"harness real-time e-markets\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/{{usersRoute}}/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{usersRoute}}",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user - Negative",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User response body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/{{usersRoute}}/11",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{usersRoute}}",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an array\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response array length\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf(10);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"All users have an 'id' and 'name' property\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    jsonData.forEach(user => {\r",
+							"        pm.expect(user).to.have.property('id');\r",
+							"        pm.expect(user).to.have.property('name');\r",
+							"        pm.expect(user.id).to.be.a('number');\r",
+							"        pm.expect(user.name).to.be.a('string');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"All users have a 'company' object with a 'name' property\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    jsonData.forEach(user => {\r",
+							"        pm.expect(user).to.have.property('company');\r",
+							"        pm.expect(user.company).to.have.property('name');\r",
+							"        pm.expect(user.company.name).to.be.a('string');\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/{{usersRoute}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{usersRoute}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get users with params",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an array\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response array length\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf(1);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User id\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].id).to.eql(5);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/{{usersRoute}}?id=5",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{usersRoute}}"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User response body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(1);\r",
+							"    pm.expect(jsonData.name).to.eql(\"Updated name\");\r",
+							"    pm.expect(jsonData.username).to.eql(\"updatedUserName\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Updated name\",\r\n    \"username\": \"updatedUserName\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/{{usersRoute}}/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{usersRoute}}",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Enpty response body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/{{usersRoute}}/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{usersRoute}}",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
